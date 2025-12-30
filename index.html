@@ -224,9 +224,8 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-const CONFIG = {
-    API: "upload.php",  // <-- Ab yeh PHP file upload handle karegi 
-            
+        const CONFIG = {
+            API: "", // Empty string means "POST to this same file"
             BGS: [
                 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop', 
                 'https://images.unsplash.com/photo-1566415781255-a2267b221008?q=80&w=2070&auto=format&fit=crop', 
@@ -317,33 +316,22 @@ const CONFIG = {
 
             xhr.onload = () => {
                 try {
-                    // Try parsing as JSON first
-                    let data;
-                    try {
-                        data = JSON.parse(xhr.responseText);
-                    } catch(err) {
-                        // If response is not JSON, it might be the raw URL from simple PHP scripts
-                        // Assuming the server returns just the URL string if not JSON
-                         data = { success: true, url: xhr.responseText };
-                    }
-                    
-                    if(data.success || data.url) {
+                    const data = JSON.parse(xhr.responseText);
+                    if(data.success) {
                         pCont.style.display = 'none';
                         resBox.style.display = 'block';
-                        // Clean URL display handled here if needed, but normally server returns full URL
                         document.getElementById('output-url').value = data.url;
                         showToast("Upload Successful");
-                    } else { throw new Error("Upload Failed"); }
+                    } else { throw new Error(data.error || "Unknown Error"); }
                 } catch (e) {
-                    showToast("Error: " + e.message, true);
+                    showToast(e.message, true);
                     btn.style.display = 'inline-flex';
                     dropZone.style.display = 'block';
                     pCont.style.display = 'none';
                 }
             };
             xhr.onerror = () => showToast("Connection Failed", true);
-            // Updated to POST to index.html without key
-            xhr.open('POST', CONFIG.API);
+            xhr.open('POST', CONFIG.API); // Posting to self
             xhr.send(fd);
         }
 
