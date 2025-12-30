@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Faizan Ahmad | Royal Gold Edition</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Realistic Gold Gradients */
+            --gold-light: #fbf5b7;
+            --gold-mid: #bf953f;
+            --gold-dark: #aa771c;
+            --gold-gradient: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            
+            --bg-black: #050505;
+            --glass-dark: rgba(0, 0, 0, 0.75);
+            --border-gold: 1px solid rgba(191, 149, 63, 0.3);
+            --glow-gold: 0 0 20px rgba(191, 149, 63, 0.3);
+            
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Lato', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background: var(--bg-black); 
+            color: #fff; 
+            font-family: var(--font-body);
+            overflow-x: hidden; 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background Slider */
+        #bg-slider {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -3; background-size: cover; background-position: center;
+            transition: opacity 1.5s ease; filter: brightness(0.25) grayscale(0.8);
+        }
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
+
+        /* Navbar */
+        .navbar {
+            padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { 
+            font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; 
+            background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 2px; text-shadow: 0 2px 10px rgba(191, 149, 63, 0.2);
+        }
+
+        /* Container */
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        .hero { text-align: center; margin-bottom: 40px; }
+        .hero h1 { 
+            font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 4rem); 
+            background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-weight: 700; margin-bottom: 10px; filter: drop-shadow(0 0 5px rgba(191, 149, 63, 0.5));
+        }
+        .hero p { color: #cfc09f; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; border-top: 1px solid #bf953f; display: inline-block; padding-top: 10px; }
+
+        /* Premium Glass Card */
+        .card {
+            background: var(--glass-dark);
+            border: var(--border-gold); border-radius: 4px;
+            padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(191, 149, 63, 0.05);
+            text-align: center; position: relative;
+        }
+        
+        /* Decorative Corners */
+        .card::before, .card::after {
+            content: ''; position: absolute; width: 30px; height: 30px;
+            border: 2px solid #bf953f; transition: 0.5s;
+        }
+        .card::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .card::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+        .drop-zone {
+            border: 1px dashed rgba(191, 149, 63, 0.4); background: rgba(0,0,0,0.3);
+            padding: 50px 20px; cursor: pointer; transition: 0.4s; margin-bottom: 30px;
+        }
+        .drop-zone:hover { border-color: #fcf6ba; background: rgba(191, 149, 63, 0.1); box-shadow: var(--glow-gold); }
+        .drop-zone i { font-size: 3rem; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
+        .status-text { font-family: var(--font-heading); color: #bf953f; font-size: 1.1rem; letter-spacing: 1px; }
+
+        /* Gold Progress Bar */
+        #progress-container { display: none; margin: 30px 0; }
+        .progress-wrapper { height: 4px; background: rgba(255,255,255,0.1); width: 100%; position: relative; }
+        #progress-bar { 
+            height: 100%; width: 0%; 
+            background: var(--gold-gradient); 
+            box-shadow: 0 0 15px #bf953f; transition: 0.2s;
+        }
+
+        /* Luxury Buttons */
+        .btn {
+            padding: 16px 35px; font-family: var(--font-heading); font-weight: 700; 
+            letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; 
+            border: none; font-size: 0.8rem; width: 100%; max-width: 300px;
+            display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+            margin: 10px; position: relative; overflow: hidden;
+        }
+        
+        .btn-gold {
+            background: var(--gold-gradient); color: #000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(191, 149, 63, 0.6); }
+
+        .btn-outline {
+            background: transparent; border: 1px solid #bf953f; color: #bf953f;
+        }
+        .btn-outline:hover { background: rgba(191, 149, 63, 0.1); color: #fff; border-color: #fff; }
+
+        /* Result Area */
+        #result-box {
+            display: none; margin-top: 30px; padding: 20px;
+            border: 1px solid #bf953f; background: rgba(0,0,0,0.5);
+            animation: fadeIn 0.6s ease;
+        }
+        #output-url {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid #666;
+            padding: 15px; color: #fcf6ba; text-align: center; margin-bottom: 20px;
+            font-family: 'Courier New', monospace; outline: none; font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer { text-align: center; margin-top: auto; padding: 30px; border-top: 1px solid rgba(191, 149, 63, 0.2); }
+        .footer p { color: #888; font-size: 0.75rem; letter-spacing: 1px; }
+
+        /* Music & Help */
+        .float-btn {
+            position: fixed; bottom: 30px; width: 50px; height: 50px;
+            border-radius: 50%; border: 1px solid #bf953f; background: #000;
+            display: flex; align-items: center; justify-content: center;
+            color: #bf953f; cursor: pointer; z-index: 100; transition: 0.3s;
+        }
+        .float-btn:hover { background: #bf953f; color: #000; box-shadow: var(--glow-gold); }
+
+        #music-ctrl { left: 30px; }
+        
+        /* Toast */
+        #toast-container { position: fixed; top: 100px; right: 20px; z-index: 9999; }
+        .toast { 
+            background: linear-gradient(135deg, #000, #1a1a1a); border: 1px solid #bf953f;
+            color: #bf953f; padding: 15px 30px; margin-bottom: 10px; font-family: var(--font-heading);
+            transform: translateX(120%); transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .toast.show { transform: translateX(0); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="bg-slider"></div>
+    <div id="particles-js"></div>
+    <div id="toast-container"></div>
+
+    <nav class="navbar">
+        <div class="logo">FAIZAN AHMAD</div>
+        <a href="https://faizankhichi.me" class="btn-outline" style="padding: 8px 20px; width: auto; font-size: 0.7rem; letter-spacing: 1px;">WEBSITE</a>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>PREMIUM CLOUD</h1>
+            <p>Exclusive Content Delivery</p>
+        </div>
+
+        <div class="card">
+            <div class="drop-zone" id="drop-zone" onclick="document.getElementById('fileInput').click()">
+                <i class="fa-solid fa-crown"></i>
+                <p id="status-text" class="status-text">SELECT MEDIA</p>
+                <p style="font-size: 0.75rem; color: #888; margin-top: 8px;">Max Size: 25MB • Secure Encrypted</p>
+            </div>
+            
+            <input type="file" id="fileInput" hidden accept="image/*,video/*,audio/*">
+            
+            <div id="progress-container">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.8rem; color:#bf953f;">
+                    <span>UPLOADING</span>
+                    <span id="percent-display">0%</span>
+                </div>
+                <div class="progress-wrapper"><div id="progress-bar"></div></div>
+            </div>
+
+            <button class="btn btn-gold" onclick="startUpload()" id="uploadBtn">
+                INITIATE UPLOAD
+            </button>
+
+            <div id="result-box">
+                <p style="color: #bf953f; font-family: var(--font-heading); margin-bottom: 15px; font-size: 1.1rem;">✓ UPLOAD COMPLETE</p>
+                <input type="text" id="output-url" readonly>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-gold" style="width: auto; padding: 12px 25px;" onclick="copyLink()">COPY LINK</button>
+                    <button class="btn btn-outline" style="width: auto; padding: 12px 25px;" onclick="window.open(document.getElementById('output-url').value, '_blank')">OPEN LINK</button>
+                </div>
+                <button class="btn btn-outline" style="border:none; margin-top:20px; font-size:0.7rem;" onclick="location.reload()">NEW UPLOAD</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p style="color: #bf953f; margin-bottom: 5px;">FAIZAN AHMAD OFFICIAL</p>
+            <p>Developed by Faizan Ahmed</p>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div id="music-ctrl" class="float-btn" onclick="handleMusic()">
+        <i class="fa-solid fa-music"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        const CONFIG = {
+            // UPDATED: API Key removed. Pointing to 'index.html' so it works with your .htaccess setup
+            API: "index.html", 
+            
+            BGS: [
+                'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop', 
+                'https://images.unsplash.com/photo-1566415781255-a2267b221008?q=80&w=2070&auto=format&fit=crop', 
+                'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'
+            ],
+            PLAYLIST: [
+                { name: 'Royalty', url: 'https://i-am.fak-official.workers.dev/x83wccl' },
+                { name: 'Gold Dust', url: 'https://i-am.fak-official.workers.dev/bff3648' }
+            ]
+        };
+
+        // --- BACKGROUND SLIDER ---
+        let bgI = 0;
+        const bgEl = document.getElementById('bg-slider');
+        function rotateBg() {
+            bgEl.style.opacity = 0; 
+            setTimeout(() => {
+                bgEl.style.backgroundImage = `url('${CONFIG.BGS[bgI]}')`;
+                bgEl.style.opacity = 1;
+                bgI = (bgI + 1) % CONFIG.BGS.length;
+            }, 1500);
+        }
+        bgEl.style.backgroundImage = `url('${CONFIG.BGS[0]}')`;
+        setInterval(rotateBg, 8000);
+
+        // --- UTILS ---
+        function showToast(msg, isError = false) {
+            const container = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = 'toast'; 
+            t.innerHTML = isError ? `<i class="fa-solid fa-triangle-exclamation"></i> ${msg}` : `<i class="fa-solid fa-bell"></i> ${msg}`;
+            if(isError) t.style.borderColor = '#ff4444';
+            container.appendChild(t);
+            setTimeout(() => t.classList.add('show'), 100);
+            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 3500);
+        }
+
+        // --- MUSIC ---
+        let sIdx = 0;
+        const player = new Audio();
+        function handleMusic() {
+            if(!player.src) {
+                player.src = CONFIG.PLAYLIST[sIdx].url;
+                showToast("Now Playing: " + CONFIG.PLAYLIST[sIdx].name);
+            }
+            player.paused ? player.play() : player.pause();
+        }
+        player.onended = () => {
+            sIdx = (sIdx + 1) % CONFIG.PLAYLIST.length;
+            player.src = CONFIG.PLAYLIST[sIdx].url; player.play();
+        };
+
+        // --- UPLOAD LOGIC ---
+        const fIn = document.getElementById('fileInput');
+        fIn.onchange = () => {
+            if(fIn.files[0]) {
+                document.getElementById('status-text').innerText = fIn.files[0].name.substring(0,20);
+                document.getElementById('status-text').style.color = "#bf953f";
+            }
+        };
+
+        function startUpload() {
+            const file = fIn.files[0];
+            if(!file) return showToast("Please select a file.", true);
+            
+            const btn = document.getElementById('uploadBtn');
+            const pCont = document.getElementById('progress-container');
+            const pBar = document.getElementById('progress-bar');
+            const pText = document.getElementById('percent-display');
+            const resBox = document.getElementById('result-box');
+            const dropZone = document.getElementById('drop-zone');
+
+            btn.style.display = 'none';
+            dropZone.style.display = 'none';
+            pCont.style.display = 'block';
+
+            const xhr = new XMLHttpRequest();
+            const fd = new FormData();
+            fd.append('file', file);
+
+            xhr.upload.onprogress = (e) => {
+                if(e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    pBar.style.width = percent + '%';
+                    pText.innerText = percent + "%";
+                }
+            };
+
+            xhr.onload = () => {
+                try {
+                    // Try parsing as JSON first
+                    let data;
+                    try {
+                        data = JSON.parse(xhr.responseText);
+                    } catch(err) {
+                        // If response is not JSON, it might be the raw URL from simple PHP scripts
+                        // Assuming the server returns just the URL string if not JSON
+                         data = { success: true, url: xhr.responseText };
+                    }
+                    
+                    if(data.success || data.url) {
+                        pCont.style.display = 'none';
+                        resBox.style.display = 'block';
+                        // Clean URL display handled here if needed, but normally server returns full URL
+                        document.getElementById('output-url').value = data.url;
+                        showToast("Upload Successful");
+                    } else { throw new Error("Upload Failed"); }
+                } catch (e) {
+                    showToast("Error: " + e.message, true);
+                    btn.style.display = 'inline-flex';
+                    dropZone.style.display = 'block';
+                    pCont.style.display = 'none';
+                }
+            };
+            xhr.onerror = () => showToast("Connection Failed", true);
+            // Updated to POST to index.html without key
+            xhr.open('POST', CONFIG.API);
+            xhr.send(fd);
+        }
+
+        function copyLink() {
+            const val = document.getElementById('output-url').value;
+            navigator.clipboard.writeText(val).then(() => showToast("Link Copied"));
+        }
+
+        // Golden Particles
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 60 },
+                color: { value: ["#bf953f", "#fcf6ba"] },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#bf953f", opacity: 0.2, width: 1 },
+                move: { enable: true, speed: 1 }
+            }
+        });
+    </script>
+</body>
+</html>
